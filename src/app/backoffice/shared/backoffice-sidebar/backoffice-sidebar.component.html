@@ -1,0 +1,20 @@
+<!-- backoffice-sidebar.component.html -->
+<nav class="backoffice-sidebar" [class.collapsed]="!(isOpen$ | async)">
+  <div class="sidebar-header">
+    <h2 style="  white-space: nowrap;
+" class="title">Admin Panel</h2>
+    <button class="toggle-btn" (click)="toggle()">
+      <span class="material-icons">{{ (isOpen$ | async) ? 'chevron_left' : 'chevron_right' }}</span>
+    </button>
+  </div>
+
+  <div class="menu-items">
+    <app-backoffice-menu-item
+      style="  white-space: nowrap;"
+      *ngFor="let item of config$ | async"
+      [item]="item"
+      [level]="0"
+      [sidebarOpen]="(isOpen$ | async) ?? true">
+    </app-backoffice-menu-item>
+  </div>
+</nav>

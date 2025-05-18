@@ -1,0 +1,31 @@
+// login.component.scss
+
+@use "variables"  as *;
+@keyframes aggressive-shake {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  15% {
+    transform: translateX(-12px) rotate(-2deg);
+  }
+  30% {
+    transform: translateX(12px) rotate(2deg);
+  }
+  45% {
+    transform: translateX(-16px) rotate(-3deg);
+  }
+  60% {
+    transform: translateX(16px) rotate(3deg);
+  }
+  75% {
+    transform: translateX(-12px) rotate(-2deg);
+  }
+  90% {
+    transform: translateX(12px) rotate(2deg);
+  }
+}
+
+.shake-animation {
+  animation: aggressive-shake 0.4s linear 2;
+  border: 2px solid $danger-color !important;
+}

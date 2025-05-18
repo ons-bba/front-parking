@@ -1,0 +1,128 @@
+.container {
+  text-align: center;
+  padding: 4rem 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.title {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: #ff6f61;
+  animation: pulse 2s infinite;
+}
+
+.message {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.wrong-route {
+  font-size: 1.1rem;
+  margin: 1rem 0 2rem;
+  color: #555;
+  user-select: text;
+}
+
+code {
+  background: #eee;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.btn {
+  background: #ff6f61;
+  color: white;
+  padding: 0.75rem 2rem;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(255, 111, 97, 0.4);
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #e55b50;
+}
+
+.animation-container {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.floating-box {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: #ff6f61aa;
+  border-radius: 10px;
+  animation: floatUp 6s ease-in-out infinite;
+  bottom: -50px;
+}
+
+.floating-box:nth-child(1) {
+  left: 20%;
+  animation-delay: 0s;
+  width: 50px;
+  height: 50px;
+  background: #ff6f61bb;
+}
+
+.floating-box:nth-child(2) {
+  left: 40%;
+  animation-delay: 1.5s;
+  width: 35px;
+  height: 35px;
+  background: #ff6f61aa;
+}
+
+.floating-box:nth-child(3) {
+  left: 60%;
+  animation-delay: 3s;
+  width: 45px;
+  height: 45px;
+  background: #ff6f61cc;
+}
+
+.floating-box:nth-child(4) {
+  left: 80%;
+  animation-delay: 4.5s;
+  width: 30px;
+  height: 30px;
+  background: #ff6f61aa;
+}
+
+.floating-box:nth-child(5) {
+  left: 50%;
+  animation-delay: 2s;
+  width: 40px;
+  height: 40px;
+  background: #ff6f61bb;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-400px) rotate(360deg);
+    opacity: 0;
+  }
+}

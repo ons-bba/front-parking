@@ -1,0 +1,147 @@
+// variables.scss
+@use "sass:map";
+@use "sass:color";
+
+/* ================
+   COLOR PALETTE
+   ================ */
+// Base Colors
+$primary-color: #b80000;    // Main brand red
+$black-color: #000000;      // Primary black
+$dark-bg: #000015;
+$gray-color: #B2B3B7;       // Neutral gray
+$dark-color : #2c2b2b;
+
+/* Semantic Colors */
+$text-color: $black-color;
+$text-light: color.adjust($black-color, $lightness: 35%);$border-color: #e0e0e0;
+$background-light: #f8f9fa;
+$white-color: #ffffff;
+$info-color: #2196F3; // Bleu vif
+
+$theme-colors: color.adjust(#2196F3, $lightness: 35%);
+// Theme Color Map for structured access
+$theme-color-map: (
+  'primary': $primary-color,
+  'dark': $dark-bg,
+  'light': $background-light,
+  'theme': $theme-colors
+);
+
+/* Status Colors */
+$success-color: #4CAF50;
+$warning-color: #FFC107;
+$danger-color: #f44336;
+$info-color: #2196F3;
+
+/* ================
+   TYPOGRAPHY
+   ================ */
+$font-family-primary: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-family-secondary: Georgia, 'Times New Roman', Times, serif;
+
+$font-size-base: 1rem;       // 16px
+$font-size-sm: $font-size-base * 0.875;  // 14px
+$font-size-lg: $font-size-base * 1.25;   // 20px
+
+// Font Weights (kept as individual variables)
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// Font Weight Map for structured access
+$font-weights: (
+  'light': $font-weight-light,
+  'regular': $font-weight-regular,
+  'medium': $font-weight-medium,
+  'bold': $font-weight-bold
+);
+
+$line-height-base: 1.5;
+$line-height-tight: 1.25;
+
+/* ================
+   SPACING
+   ================ */
+$spacing-unit: 1rem;        // 16px
+$spacing-scale: (
+  'xs': $spacing-unit * 0.25,   // 4px
+  'sm': $spacing-unit * 0.5,    // 8px
+  'md': $spacing-unit,          // 16px
+  'lg': $spacing-unit * 1.5,    // 24px
+  'xl': $spacing-unit * 2       // 32px
+);
+
+// Direct spacing variables
+$spacing-xs: map.get($spacing-scale, 'xs');
+$spacing-sm: map.get($spacing-scale, 'sm');
+$spacing-md: map.get($spacing-scale, 'md');
+$spacing-lg: map.get($spacing-scale, 'lg');
+$spacing-xl: map.get($spacing-scale, 'xl');
+
+/* ================
+   BREAKPOINTS
+   ================ */
+$breakpoints: (
+  'xs': 0,
+  'sm': 36em,     // 576px
+  'md': 48em,     // 768px
+  'lg': 62em,     // 992px
+  'xl': 75em      // 1200px
+);
+
+/* ================
+   Z-INDEX
+   ================ */
+$z-indexes: (
+  'dropdown': 1000,
+  'header': 1100,
+  'sidebar': 1200,
+  'modal': 1300,
+  'toast': 1400
+);
+
+/* ================
+   SHADOWS
+   ================ */
+$box-shadow-sm: 0 1px 3px rgba($black-color, 0.12);
+$box-shadow-md: 0 4px 6px rgba($black-color, 0.15);
+$box-shadow-lg: 0 10px 20px rgba($black-color, 0.19);
+
+// Shadow Map
+$shadows: (
+  'sm': $box-shadow-sm,
+  'md': $box-shadow-md,
+  'lg': $box-shadow-lg
+);
+
+/* ================
+   TRANSITIONS
+   ================ */
+$transition-base: all 0.3s ease-in-out;
+$transition-fast: all 0.15s ease-in-out;
+$transition-slow: all 0.5s ease-in-out;
+
+// Transition Map
+$transitions: (
+  'base': $transition-base,
+  'fast': $transition-fast,
+  'slow': $transition-slow
+);
+
+/* ================
+   BORDERS
+   ================ */
+$border-radius: (
+  'sm': 4px,
+  'md': 8px,
+  'lg': 12px,
+  'full': 50%
+);
+
+// Backward compatibility
+$border-radius-sm: map.get($border-radius, 'sm');
+$border-radius-md: map.get($border-radius, 'md');
+$border-radius-lg: map.get($border-radius, 'lg');
+$border-radius-full: map.get($border-radius, 'full');

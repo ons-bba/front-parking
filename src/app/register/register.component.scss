@@ -1,0 +1,183 @@
+/* Floating animated boxes */
+.animation-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.floating-box {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: #ff6f61;
+  border-radius: 20%;
+  animation: floatUp 6s ease-in-out infinite;
+  bottom: -50px;
+}
+
+.floating-box:nth-child(1) {
+  left: 20%;
+  animation-delay: 0s;
+  width: 50px;
+  height: 50px;
+  background: #ff6f61bb;
+}
+
+.floating-box:nth-child(2) {
+  left: 40%;
+  animation-delay: 1.5s;
+  width: 35px;
+  height: 35px;
+  background: #ff6f61aa;
+}
+
+.floating-box:nth-child(3) {
+  left: 60%;
+  animation-delay: 3s;
+  width: 45px;
+  height: 45px;
+  background: #ff6f61cc;
+}
+
+.floating-box:nth-child(4) {
+  left: 80%;
+  animation-delay: 4.5s;
+  width: 30px;
+  height: 30px;
+  background: #ff6f61aa;
+}
+
+.floating-box:nth-child(5) {
+  left: 50%;
+  animation-delay: 2s;
+  width: 40px;
+  height: 40px;
+  background: #ff6f61bb;
+}
+
+/* Keyframes for floating animation */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-400px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* User registration form styling */
+.create-user-wrapper {
+  max-width: 750px;
+  margin: 40px auto;
+  padding: 30px 25px;
+  background-color: #f7f9fc;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(44, 62, 80, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.create-user-wrapper h2 {
+  color: #2c3e50;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+.create-user-wrapper p {
+  color: #555;
+  margin-bottom: 25px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Form grid: 2 columns */
+.user-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+button[mat-raised-button] {
+  grid-column: 1 / -1;
+  margin-top: 20px;
+  padding: 12px 0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  background: #2c3e50;
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+button[mat-raised-button]:hover:not(:disabled) {
+  background-color: #1a2736;
+  box-shadow: 0 6px 16px rgba(26, 39, 54, 0.5);
+}
+
+button[mat-raised-button]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Image preview styling */
+.image-preview {
+  position: fixed;
+  top: 40px; /* Same as create-user-wrapper's margin-top */
+  right: 7%;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+  background: #f7f9fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #2c3e50;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Add these styles to your existing CSS */
+
+.file-upload-container {
+  margin: 16px 0; /* Match mat-form-field margin */
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none; /* Hide the subscript wrapper */
+  }
+}
+
+.file-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 4px; /* Match mat-form-field label spacing */
+
+  button {
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+  }
+}
+
+.file-name {
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Keep existing other styles */

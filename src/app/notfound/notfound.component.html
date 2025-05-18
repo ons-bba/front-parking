@@ -1,0 +1,13 @@
+<div class="container">
+  <h1 class="title">404 - Page Not Found</h1>
+  <p class="message">Oops! The page you tried to visit does not exist.</p>
+  <p class="wrong-route">
+    <strong>Attempted URL:</strong>
+    <code>{{ attemptedUrl }}</code>
+  </p>
+  <a routerLink="/login" class="btn">Go Home</a>
+
+  <div class="animation-container">
+    <div class="floating-box" *ngFor="let n of [1,2,3,4,5]"></div>
+  </div>
+</div>

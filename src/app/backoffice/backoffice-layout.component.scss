@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  --sidebar-width: 280px; /* Default sidebar width - adjust as needed */
+  --sidebar-collapsed-width: 60px; /* Width when sidebar is collapsed */
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  margin-top: 50px; // Offset for fixed header
+}
+
+.content-area {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease; /* Smooth transition for sidebar toggle */
+}
+
+/* When sidebar is expanded */
+:host(.sidebar-expanded) .content-area {
+  margin-left: var(--sidebar-width);
+}
+
+/* When sidebar is collapsed */
+:host(.sidebar-collapsed) .content-area {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Responsive design for small screens */
+@media (max-width: 768px) {
+  :host(.sidebar-expanded) .content-area,
+  :host(.sidebar-collapsed) .content-area {
+    margin-left: 0; /* On small screens, content takes full width */
+  }
+}

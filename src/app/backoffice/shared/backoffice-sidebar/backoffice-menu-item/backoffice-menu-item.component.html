@@ -1,0 +1,38 @@
+<!-- backoffice-menu-item.component.html -->
+<div class="backoffice-menu-item" [class.collapsed]="!sidebarOpen">
+  <a class="content"
+     [routerLink]="item.link"
+     routerLinkActive="active"
+     [routerLinkActiveOptions]="item.exact ? {exact: true} : {exact: false}"
+     (click)="handleClick($event)"
+     [title]="!sidebarOpen ? item.title : ''">
+
+    <span class="material-icons icon">{{ item.icon }}</span>
+
+    @if (sidebarOpen) {
+      <span class="title">{{ item.title }}</span>
+      <div class="spacer"></div>
+
+      @if (item.children) {
+        <span class="arrow" [@rotateArrow]="item.isOpen ? 'rotated' : 'default'">
+          <span class="material-icons">expand_more</span>
+        </span>
+      }
+
+      @if (item.badge) {
+        <span class="badge">{{ item.badge }}</span>
+      }
+    }
+  </a>
+
+  @if (sidebarOpen && item.children) {
+    <div class="submenu" [@submenu]="item.isOpen ? 'open' : 'closed'">
+      <app-backoffice-menu-item
+        *ngFor="let child of item.children"
+        [item]="child"
+        [level]="level + 1"
+        [sidebarOpen]="sidebarOpen">
+      </app-backoffice-menu-item>
+    </div>
+  }
+</div>

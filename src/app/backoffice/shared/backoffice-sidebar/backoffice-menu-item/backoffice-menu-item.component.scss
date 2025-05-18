@@ -1,0 +1,81 @@
+@use '../../../../../styles/variables' as v;
+
+.backoffice-menu-item {
+  position: relative;
+  transition: all 0.3s ease;
+  margin: 2px 0;
+
+  .content {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    color: rgba(v.$white-color, 0.8);
+    padding: 12px v.$spacing-md;
+    text-decoration: none;
+    border-radius: v.$border-radius-sm;
+    transition: all 0.25s ease;
+
+    &:hover {
+      background: rgba(v.$white-color, 0.05);
+      color: v.$white-color;
+    }
+
+    &.active {
+      background: rgba(v.$primary-color, 0.15);
+      color: v.$primary-color;
+    }
+
+    .icon {
+      color: currentColor;
+      font-size: 1.4rem;
+    }
+
+    .badge {
+      background: rgba(v.$primary-color, 0.2);
+      color: v.$primary-color;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+    }
+  }
+
+  .submenu {
+    padding-left: 40px;
+    background: rgba(v.$black-color, 0.1);
+
+    .backoffice-menu-item {
+      margin: 1px 0;
+
+      .content {
+        padding: 8px v.$spacing-md;
+        font-size: 0.95em;
+      }
+    }
+  }
+
+  &.collapsed {
+    .content {
+      justify-content: center;
+      padding: 12px;
+
+      &::after {
+        content: attr(title);
+        position: absolute;
+        left: calc(100% + 15px);
+        background: v.$dark-color;
+        color: v.$white-color;
+        padding: 8px 12px;
+        border-radius: 4px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+
+      &:hover::after {
+        opacity: 1;
+      }
+    }
+  }
+}

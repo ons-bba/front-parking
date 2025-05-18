@@ -1,0 +1,62 @@
+@use '../../../../styles/variables' as v;
+
+.backoffice-sidebar {
+  $sidebar-width: 280px;
+  $collapsed-width: 60px;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  width: $sidebar-width;
+  background: v.$dark-color; // Use direct variable
+  color: v.$white-color;
+  transition: all 0.3s ease-in-out;
+  z-index: 1000; // Replace map.get with actual value
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &.collapsed {
+    width: $collapsed-width;
+
+    .title {
+      opacity: 0;
+    }
+
+    .menu-items {
+      padding: 0 v.$spacing-xs; // Use direct spacing variable
+    }
+  }
+
+  .sidebar-header {
+    padding: v.$spacing-md;
+    border-bottom: 1px solid rgba(v.$white-color, 0.1);
+    position: relative;
+    height: 60px;
+  }
+
+  .toggle-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(v.$white-color, 0.1);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: v.$white-color;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: v.$primary-color; // Use primary color variable
+    }
+  }
+
+  .menu-items {
+    padding: v.$spacing-sm 0;
+    flex-grow: 1;
+  }
+}
