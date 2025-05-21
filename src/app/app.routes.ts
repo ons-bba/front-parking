@@ -4,8 +4,8 @@ import {VerifyAccountComponent} from './register/verify-account/verify-account.c
 import {GuestGuard} from './shared/guest.guard';
 import {Role} from './services/auth.service';
 import {AuthGuard} from './shared/auth-guard';
-import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
-import {ResetPasswordComponent} from './reset-password/reset-password.component';
+import {ForgotPasswordComponent} from './shared/components/forgot-password/forgot-password.component';
+import {ResetPasswordComponent} from './shared/components/reset-password/reset-password.component';
 
 export const routes: Routes = [
   {
@@ -37,7 +37,7 @@ export const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   {
     path: '**',
-    loadComponent: () => import('../app/notfound/notfound.component').then(m => m.NotfoundComponent)
+    loadComponent: () => import('./shared/components/notfound/notfound.component').then(m => m.NotfoundComponent)
   },
 
 
