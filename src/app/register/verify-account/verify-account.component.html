@@ -1,0 +1,15 @@
+<div class="verify-account-container">
+  <div class="message-box" *ngIf="loading">
+    <p class="loading-text">Veuillez patienter pendant l’activation de votre compte...</p>
+    <div class="spinner"></div>
+  </div>
+
+  <div class="error-box" *ngIf="errorMessage">
+    <p class="error-text">{{ errorMessage }}</p>
+    <div class="actions">
+      <button routerLink="/login" class="btn">Se connecter</button>
+      <button routerLink="/register" class="btn">S’inscrire</button>
+    </div>
+    <p class="admin-contact">Si le problème persiste, veuillez contacter l'administration.</p>
+  </div>
+</div>

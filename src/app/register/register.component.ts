@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
 import {DispatcherService} from '../services/dispatcher-service.service';
 import {DISPATCHER_ACTIONS} from '../services/data/shared.constant';
 import {Router, RouterLink} from '@angular/router';
+import {ModalService} from '../shared/modals/modal.service';
 
 // Updated phone regex to match backend pattern
 const PHONE_REGEX = /^[0-9]{8}$/;
@@ -39,7 +40,7 @@ const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  roles = ['CONDUCTEUR', 'OPERATEUR', 'ADMIN'];
+  roles = ['CONDUCTEUR', 'OPERATEUR'];
   sexes = ['HOMME', 'FEMME'];
   errorMessage: string = '';
 
@@ -52,7 +53,7 @@ export class RegisterComponent {
     private snackBar: MatSnackBar,
     private authService: AuthService,
     private dispatcher:DispatcherService,
-    private router:Router
+    private router:Router , private modals :ModalService
   ) {
     this.userForm = this.fb.group({
       nom: ['', Validators.required],
@@ -113,7 +114,9 @@ export class RegisterComponent {
     this.authService.createUser(formData).subscribe({
       next: (res: any) => {
         this.dispatcher.dispatch(DISPATCHER_ACTIONS.SPINNER,false);
-        this.showSuccess(res.message || 'Utilisateur créé avec succès!');
+        // this.showSuccess(res.message || 'Utilisateur créé avec succès!');
+        this.modals.showAlert('Utilisateur créé avec succès! , Check Your Email '  ,"success" );
+        this.router.navigate(["/login"])
         this.resetForm();
 
       },

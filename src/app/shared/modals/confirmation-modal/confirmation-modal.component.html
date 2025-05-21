@@ -1,0 +1,36 @@
+@if(data) {
+  <div class="modal-backdrop">
+    <div
+      class="modal-container"
+      [@materialize]
+    >
+      <div class="modal-header">
+        <h2 class="modal-title">{{ data.title || title }}</h2>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="modal-content">
+        <p class="modal-message">{{ data.message || message }}</p>
+      </div>
+
+      <div class="modal-actions">
+        <button
+          mat-button
+          class="cancel-button"
+          (click)="close(false)"
+        >
+          {{ data.cancelButtonText || cancelButtonText }}
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          class="confirm-button"
+          (click)="close(true)"
+        >
+          {{ data.confirmButtonText || confirmButtonText }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

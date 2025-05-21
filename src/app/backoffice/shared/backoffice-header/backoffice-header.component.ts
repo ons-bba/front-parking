@@ -4,6 +4,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
+import {AuthService} from '../../../services/auth.service';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -19,4 +21,11 @@ import {MatMenuModule} from '@angular/material/menu';
   templateUrl: './backoffice-header.component.html',
   styleUrls: ['./backoffice-header.component.scss']
 })
-export class BackofficeHeaderComponent {}
+export class BackofficeHeaderComponent {
+  constructor(private authService : AuthService , private router:Router) {
+  }
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['login']);
+  }
+}
