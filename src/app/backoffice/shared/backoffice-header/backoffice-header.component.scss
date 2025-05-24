@@ -8,6 +8,7 @@
   color: white;
   position: fixed;
   overflow: hidden;
+  z-index: 999;
 
   &::after {
     content: '';

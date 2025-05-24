@@ -1,0 +1,108 @@
+<mat-card
+  class="user-card"
+  (mouseenter)="hoverState = 'hovered'"
+  (mouseleave)="hoverState = 'normal'"
+  [@cardAnimation]="hoverState"
+  (click)="toggleExpand()"
+  [ngStyle]="{'background': roleColor + '11'}"
+>
+  <div class="role-indicator" [ngStyle]="{'background-color': roleColor}"></div>
+  <div class="role-wave" [ngStyle]="{'background-color': roleColor}"></div>
+
+  <mat-card-header>
+    <div  style="display: flex;justify-content: space-between;
+    width: 100%;">
+      <mat-card-title class="user-name">{{ user.nom }} {{ user.prenom }}</mat-card-title>
+      <mat-card-subtitle style="min-width: 200px">
+      <span class="role-badge" [ngStyle]="{
+        'background-color': roleColor + '22',
+        'color': roleColor,
+        'border': '1px solid ' + roleColor,      }">
+        {{ user.role }}
+      </span>
+        <span class="role-badge" [ngStyle]="{
+        'background-color': roleColor + '22',
+        'color': roleColor,
+        'border': '1px solid ' + roleColor
+      }">
+        {{ user.status }}
+      </span>
+      </mat-card-subtitle>
+    </div>
+
+  </mat-card-header>
+
+  <mat-card-content [@expandCollapse]="isExpanded ? 'expanded' : 'collapsed'">
+    <div class="user-details">
+      <div class="detail-item">
+        <mat-icon class="detail-icon">email</mat-icon>
+        <div>
+          <div>Email</div>
+          <span>{{ user.email }}</span>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <mat-icon class="detail-icon">badge</mat-icon>
+        <div>
+          <div>Points </div>
+          <span>{{ user.points_fidelite }}</span>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <mat-icon class="detail-icon">calendar_today</mat-icon>
+        <div>
+          <div>Member Since</div>
+          <span>{{ user.date_inscription | date: 'mediumDate' }}</span>
+        </div>
+      </div>
+      <div class="detail-item" *ngIf="user.telephone">
+        <mat-icon class="detail-icon">phone</mat-icon>
+        <div>
+          <div>Phone Number</div>
+          <span>{{ user.telephone }}</span>
+        </div>
+      </div>
+
+      <!-- NEW: Account Status -->
+      <div class="detail-item">
+        <mat-icon class="detail-icon">verified_user</mat-icon>
+        <div>
+          <div>Status</div>
+          <span>{{ user.status }}</span>
+        </div>
+      </div>
+      <!-- NEW: Account Status -->
+      <div class="detail-item">
+        <mat-icon class="detail-icon">{{user.sex == Sex.HOMME ? 'male' : 'female'}}</mat-icon>
+        <div>
+          <div>Sex</div>
+          <span>{{ user.sex }}</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="actions">
+      <button mat-raised-button class="action-btn" (click)="onViewDetails($event)"
+              [ngStyle]="{'background-color': roleColor + '22', 'color': roleColor}">
+        <mat-icon>visibility</mat-icon>
+        <span>Détails</span>
+      </button>
+<!--        @if(user.status != "AccountStatus."){-->
+<!--          <button mat-raised-button class="action-btn" (click)="onArchive($event , USER_ACTIONS.ARCHIVE_USER ,user.id)"-->
+<!--                  [ngStyle]="{'background-color': '#e0e0e0', 'color': '#333'}">-->
+<!--            <mat-icon>inventory_2</mat-icon>-->
+<!--            <span>Archiver</span>-->
+<!--          </button>-->
+<!--        }-->
+
+
+      <button mat-raised-button class="action-btn delete" (click)="onDelete($event , 'DELETE_USER' , user._id)">
+        <mat-icon>delete</mat-icon>
+        <span>Supprimer</span>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

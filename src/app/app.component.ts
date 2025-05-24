@@ -4,17 +4,14 @@ import {NgxSpinnerModule, NgxSpinnerService} from 'ngx-spinner';
 import {DispatcherService} from './services/dispatcher-service.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {DISPATCHER_ACTIONS} from './services/data/shared.constant';
-import {AuthInterceptor} from './shared/token.interceptor';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+
 
 @Component({
   selector: 'app-root',
   standalone:true,
   imports: [RouterOutlet ,NgxSpinnerModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
-  providers : [    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ]
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'parking-pi';
