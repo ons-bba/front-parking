@@ -1,1 +1,62 @@
-<p>user-dashboard works!</p>
+<div class="dashboard-container">
+  <h1>User Statistics</h1>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <h3>Total Users</h3>
+      <p>{{ stats?.totalUsers }}</p>
+    </div>
+    <div class="summary-card">
+      <h3>Active Users (30d)</h3>
+      <p>{{ stats?.recentActivity }}</p>
+    </div>
+    <div class="summary-card">
+      <h3>Phone Usage</h3>
+      <p>With: {{ stats?.phoneUsage?.withPhone }}</p>
+      <p>Without: {{ stats?.phoneUsage?.withoutPhone }}</p>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>Role Distribution</h3>
+      <canvas *ngIf="roleChart" baseChart
+              [data]="roleChart.data"
+              [type]="roleChart.type"
+              [options]="roleChart.options">
+      </canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Registration Trends</h3>
+      <canvas *ngIf="registrationChart" baseChart
+              [data]="registrationChart.data"
+              [type]="registrationChart.type"
+              [options]="registrationChart.options">
+      </canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Loyalty Points</h3>
+      <canvas *ngIf="pointsChart" baseChart
+              [data]="pointsChart.data"
+              [type]="pointsChart.type"
+              [options]="pointsChart.options">
+      </canvas>
+    </div>
+  </div>
+
+  <!-- Top Users Table -->
+  <div class="top-users">
+    <h3>Top Loyal Users</h3>
+    <table>
+      <tr *ngFor="let user of stats?.topLoyalUsers">
+        <td><img [src]="user.image" class="user-avatar"></td>
+        <td>{{ user.prenom }} {{ user.nom }}</td>
+        <td>{{ user.points_fidelite }} points</td>
+      </tr>
+    </table>
+  </div>
+</div>
