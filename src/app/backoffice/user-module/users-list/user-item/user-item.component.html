@@ -99,9 +99,9 @@
 <!--        }-->
 
 
-      <button mat-raised-button class="action-btn delete" (click)="onDelete($event , 'DELETE_USER' , user._id)">
+      <button *ngIf="user.status!==Statut.ARCHIVE"  mat-raised-button class="action-btn delete" (click)="onDelete($event , 'DELETE_USER' , user._id)">
         <mat-icon>delete</mat-icon>
-        <span>Supprimer</span>
+        <span>Archiver</span>
       </button>
     </div>
   </mat-card-content>

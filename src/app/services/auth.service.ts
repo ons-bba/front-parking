@@ -9,6 +9,16 @@ export enum Role {
   ADMIN      = 'ADMIN',
 }
 
+
+export enum Statut {
+  ACTIF = 'ACTIF',
+  SUSPENDU = 'SUSPENDU',
+  BLOQUE = 'BLOQUE',
+  ARCHIVE = 'ARCHIVE',
+  PENDING = 'PENDING'
+}
+
+
 /**
  * Enum for user sex
  */

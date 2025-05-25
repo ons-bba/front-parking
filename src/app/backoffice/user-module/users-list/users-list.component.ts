@@ -73,7 +73,20 @@ export class UsersListComponent implements OnInit {
     return user._id ;
   }
 
-  handleAction($event: { action : string , payload : any }) {
-
+  handleAction(event: { action : string , payload : any }) {
+      switch (event.action){
+        case "VIEW_DETAILS" :
+          this.router.navigate(["/backoffice/users/details/"+event.payload]);
+          break ;
+        case "DELETE_USER":
+          this.userService.archiver(event.payload).subscribe({
+              next :(data:any)=>{
+                if(data.success){
+                  this.ngOnInit()
+                }
+              }
+          })
+          break;
+      }
   }
 }

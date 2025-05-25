@@ -20,4 +20,16 @@ export class UserService {
   getAllUser() :Observable<getAllUserForAdminInterface> {
     return this.httpclient.get<getAllUserForAdminInterface>(this.baseUrl+"/active")
   }
+
+  getUserById(userId: string) {
+    return this.httpclient.get<{success:boolean , user :User}>(this.baseUrl + userId);
+  }
+
+  updateUser(updatedUser: any, _id: string) {
+    return this.httpclient.put(this.baseUrl  + _id + "/update", updatedUser);
+  }
+
+  archiver(id :string ) {
+    return this.httpclient.put(`${this.baseUrl}${id}`, this.baseUrl);
+  }
 }

@@ -4,7 +4,7 @@ import {User} from '../../../../shared/interfaces/interfaces.general';
 import {ModalService} from '../../../../shared/modals/modal.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from '@angular/material/card';
 import {DatePipe, NgIf, NgStyle} from '@angular/common';
-import {Sex} from '../../../../services/auth.service';
+import {Sex, Statut} from '../../../../services/auth.service';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 
@@ -82,10 +82,10 @@ export class UserItemComponent implements  OnChanges {
   onDelete(event: MouseEvent , action : any , id :string) {
     event.stopPropagation()
     this.dialog.confirm({
-      title : "Suppression d'un utilisateur !!",
-      message :"Est tu sure de vouloir supprimer cet utilisateur !!",
+      title : "Archiver un utilisateur !!",
+      message :"Est tu sure de vouloir Archiver cet utilisateur !!",
       cancelButtonText : "Annuler",
-      confirmButtonText :"Supprimer"
+      confirmButtonText :"Archiver"
     }).subscribe(data=>{
       if(data) {
         this.delete.emit({action :action , payload : id});
@@ -94,6 +94,8 @@ export class UserItemComponent implements  OnChanges {
   }
 
   onViewDetails(event: MouseEvent) {
+    console.log(this.user);
+
     event.stopPropagation();
     this.viewDetails.emit({
       action: 'VIEW_DETAILS',
@@ -108,4 +110,5 @@ export class UserItemComponent implements  OnChanges {
 
 
   protected readonly Sex = Sex;
+  protected readonly Statut =Statut ;
 }
