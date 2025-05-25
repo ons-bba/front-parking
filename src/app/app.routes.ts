@@ -6,6 +6,7 @@ import {Role} from './services/auth.service';
 import {AuthGuard} from './shared/auth-guard';
 import {ForgotPasswordComponent} from './shared/components/forgot-password/forgot-password.component';
 import {ResetPasswordComponent} from './shared/components/reset-password/reset-password.component';
+import {frontofficeRoutes} from './frontoffice/frontoffice.routes';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,13 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.ADMIN] },
     children :backofficeRoutes
+  },
+  {
+    path: 'front-office',
+    loadComponent: () => import('../app/frontoffice/frontoffice.component').then(m => m.FrontofficeComponent),
+    canActivate: [AuthGuard],
+    data: { roles: [Role.OPERATEUR , Role.CONDUCTEUR] },
+    children :frontofficeRoutes
   },
    {path : "users/verifyaccount/:token" ,component : VerifyAccountComponent},
   { path: 'forget-password', component: ForgotPasswordComponent },

@@ -6,9 +6,10 @@ import {UsersListComponent} from './user-module/users-list/users-list.component'
 import {UserDetailsComponent} from './user-module/user-details/user-details.component';
 
 export const backofficeRoutes: Routes = [
-   { path :"dashboard" ,component : DashboardComponent },
-    { path :"users" ,component : CreateUserComponent },
-    { path :"users/create" ,component : CreateUserComponent },
+    { path :"users" ,component : DashboardComponent },
+    { path :"users/dashboard" ,component : DashboardComponent },
+
+  // { path :"users/create" ,component : CreateUserComponent },
    { path :"users/list" ,component : UsersListComponent },
    { path :"users/details/:id" ,component : UserDetailsComponent },
 ];

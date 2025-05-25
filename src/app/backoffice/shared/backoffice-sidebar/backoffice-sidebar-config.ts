@@ -14,17 +14,23 @@ export const BACKOFFICE_SIDEBAR_CONFIG: MenuItem[] = [
   {
     title: 'User Management',
     icon: 'people',
-    link: '/backoffice/users',
+    link: '/backoffice/users/list',
     children: [
+      // {
+      //   title: 'Add User',
+      //   icon: 'person_add',
+      //   link: '/backoffice/users/create'
+      // },
+      //
+      {
+        title: 'Statistiques',
+        icon: 'speed',
+        link: '/backoffice/users/dashboard'
+      },
       {
         title: 'liste des utilisateurs',
         icon: 'list',
         link: '/backoffice/users/list'
-      },
-      {
-        title: 'Add User',
-        icon: 'person_add',
-        link: '/backoffice/users/create'
       }
     ]
   },
