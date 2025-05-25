@@ -1,0 +1,106 @@
+
+<div class="parking-container">
+  <!-- En-tête -->
+  <header class="header">
+    <h1>
+      <mat-icon>local_parking</mat-icon>
+      Parkings à proximité
+    </h1>
+    <button mat-raised-button color="primary" (click)="refreshPosition()">
+      <mat-icon>refresh</mat-icon>
+      Actualiser
+    </button>
+  </header>
+
+  <!-- État de chargement -->
+  <div *ngIf="loading" class="loading-state">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Recherche des parkings près de vous...</p>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="error" class="error-state">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h3>Erreur de localisation</h3>
+    <p>{{ error }}</p>
+    <button mat-stroked-button (click)="refreshPosition()">
+      Réessayer
+    </button>
+  </div>
+
+  <!-- Résultats -->
+  <div *ngIf="!loading && parkings.length > 0" class="results-container">
+    <!-- Carte interactive -->
+    <div *ngIf="currentPosition" class="map-container">
+      <google-map  [center]="currentPosition" [zoom]="15">
+        <map-marker 
+          *ngFor="let parking of parkings"
+          [position]="{lat: parking.localisation.coordinates[1], lng: parking.localisation.coordinates[0]}"
+          [title]="parking.nom"
+          (mapClick)="selectParking(parking)">
+        </map-marker>
+      </google-map>
+    </div>
+
+    <!-- Liste des parkings -->
+    <div class="parking-list">
+      <mat-card *ngFor="let parking of parkings" class="parking-card" 
+                [class.selected]="selectedParking?._id === parking._id">
+        <mat-card-header>
+          <mat-card-title>{{ parking.nom }}</mat-card-title>
+          <mat-card-subtitle>
+            <div class="distance-badge">
+              <mat-icon>directions_walk</mat-icon>
+              <!-- {{ parking.distance | number:'1.1-1' }} km -->
+            </div>
+            <div class="availability">
+              <mat-icon>local_parking</mat-icon>
+              {{ parking.placesDisponible }} places libres
+            </div>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content> 
+          <!-- Tarifs -->
+          <!-- <div class="tarifs-section">
+            <h4><mat-icon>attach_money</mat-icon> Tarifs</h4>
+            <ul>
+              <li *ngFor="let tarifType of getTarifTypes(parking.tarifs)">
+                <strong>{{ tarifType }}:</strong>
+                {{ parking.tarifs[tarifType].horaire | currency:'EUR' }}/h -
+                {{ parking.tarifs[tarifType].journalier | currency:'EUR' }}/j
+              </li>
+            </ul>
+          </div> -->
+
+          <!-- Services -->
+          <div *ngIf="parking.prestations?.length" class="services-section">
+            <h4><mat-icon>star</mat-icon> Services</h4>
+            <div class="service-tags">
+              <mat-chip *ngFor="let prestation of parking.prestations">
+                {{ prestation.nom }}
+              </mat-chip>
+            </div>
+          </div> 
+        </mat-card-content>
+
+         <!-- <mat-card-actions align="end">
+          <button mat-button (click)="openDirections(parking)">
+            <mat-icon>directions</mat-icon> Itinéraire
+          </button>
+          <button mat-raised-button color="primary" 
+                  [routerLink]="['/reservation', parking._id]">
+            Réserver
+          </button>
+        </mat-card-actions> -->
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Aucun résultat -->
+  <div *ngIf="!loading && parkings.length === 0 && !error" class="empty-state">
+    <mat-icon>location_off</mat-icon>
+    <h3>Aucun parking disponible</h3>
+    <p>Aucun parking ouvert n'a été trouvé dans votre zone.</p>
+  </div>
+</div>

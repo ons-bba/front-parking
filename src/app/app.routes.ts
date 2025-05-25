@@ -43,6 +43,7 @@ export const routes: Routes = [
    {path : "users/verifyaccount/:token" ,component : VerifyAccountComponent},
   { path: 'forget-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+  {path : 'search',component:SearchParkingComponent},
   {
     path: '**',
     loadComponent: () => import('./shared/components/notfound/notfound.component').then(m => m.NotfoundComponent)
