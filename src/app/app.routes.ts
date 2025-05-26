@@ -7,6 +7,7 @@ import {AuthGuard} from './shared/auth-guard';
 import {ForgotPasswordComponent} from './shared/components/forgot-password/forgot-password.component';
 import {ResetPasswordComponent} from './shared/components/reset-password/reset-password.component';
 import {frontofficeRoutes} from './frontoffice/frontoffice.routes';
+import { SearchParkingComponent } from './search-parking/search-parking.component';
 
 export const routes: Routes = [
   {

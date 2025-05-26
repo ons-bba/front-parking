@@ -1,4 +1,5 @@
-import { Parking } from '../shared/interfaces/parking.interface';
+import { Parking } from './../shared/interfaces/parking.interface';
+
 import { searchParkingService } from '../services/search-parking.service';
 import { GoogleMapsModule,MapMarker } from '@angular/google-maps';
 import { Component, OnInit } from '@angular/core';
@@ -88,6 +89,7 @@ export class SearchParkingComponent implements OnInit {
       next : (parkings)=> {
         this.parkings = parkings;
         this.loading = false;
+        console.log(parkings)
       },
       error : (err)=>{
         this.error = 'Erreur lors du chargement des parkings';
@@ -101,6 +103,17 @@ export class SearchParkingComponent implements OnInit {
     this.selectedParking = parking
 
   }
+  openDirections(parking:Parking):void{
+    if(!parking?.localisation?.coordinates) return 
+
+    const [lng,lat] = parking.localisation.coordinates;
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`
+    window.open(url,'_blank')
+    
+    
+
+  }
+ 
 
 
 
