@@ -1,0 +1,82 @@
+
+<div class="container mt-4">
+  <h2>{{ isEditMode ? 'Modifier' : 'Créer' }} un parking</h2>
+
+  <form [formGroup]="parkingForm" (ngSubmit)="onSubmit()" class="mt-3">
+    <!-- Champ Nom -->
+    <div class="mb-3">
+      <label for="nom" class="form-label">Nom du parking</label>
+      <input type="text" class="form-control" id="nom" formControlName="nom">
+      <div *ngIf="parkingForm.get('nom')?.invalid && parkingForm.get('nom')?.touched" class="text-danger">
+        <small *ngIf="parkingForm.get('nom')?.errors?.['required']">Ce champ est obligatoire</small>
+        <small *ngIf="parkingForm.get('nom')?.errors?.['maxlength']">Maximum 100 caractères</small>
+      </div>
+    </div>
+
+    <!-- Champ Statut -->
+    <div class="mb-3">
+      <label for="statut" class="form-label">Statut</label>
+      <select class="form-select" id="statut" formControlName="statut">
+        <option value="OUVERT">Ouvert</option>
+        <option value="FERME">Fermé</option>
+        <option value="COMPLET">Complet</option>
+        <option value="MAINTENANCE">Maintenance</option>
+      </select>
+    </div>
+
+    <!-- Champ Places Total -->
+    <div class="mb-3">
+      <label for="placesTotal" class="form-label">Nombre total de places</label>
+      <input type="number" class="form-control" id="placesTotal" formControlName="placesTotal" min="1">
+      <div *ngIf="parkingForm.get('placesTotal')?.invalid && parkingForm.get('placesTotal')?.touched" class="text-danger">
+        <small *ngIf="parkingForm.get('placesTotal')?.errors?.['required']">Ce champ est obligatoire</small>
+        <small *ngIf="parkingForm.get('placesTotal')?.errors?.['min']">Minimum 1 place</small>
+      </div>
+    </div>
+
+    <!-- Champ Localisation -->
+    <div class="mb-3" formGroupName="localisation">
+      <h5>Localisation</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="longitude" class="form-label">Longitude</label>
+          <input type="number" class="form-control" id="longitude" 
+                 formControlName="coordinates" [value]="parkingForm.get('localisation.coordinates')?.value[0]"
+                 (input)="updateCoordinates(0, $event)">
+        </div>
+        <div class="col-md-6">
+          <label for="latitude" class="form-label">Latitude</label>
+          <input type="number" class="form-control" id="latitude" 
+                 formControlName="coordinates" [value]="parkingForm.get('localisation.coordinates')?.value[1]"
+                 (input)="updateCoordinates(1, $event)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Champ Horaires -->
+    <div class="mb-3" formGroupName="horaires">
+      <h5>Horaires</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="ouverture" class="form-label">Heure d'ouverture</label>
+          <input type="time" class="form-control" id="ouverture" formControlName="ouverture">
+        </div>
+        <div class="col-md-6">
+          <label for="fermeture" class="form-label">Heure de fermeture</label>
+          <input type="time" class="form-control" id="fermeture" formControlName="fermeture">
+        </div>
+      </div>
+    </div>
+
+    <!-- Boutons de soumission -->
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="btn btn-outline-secondary" (click)="router.navigate(['/parkings'])">
+        Annuler
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="parkingForm.invalid || isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+      </button>
+    </div>
+  </form>
+</div>

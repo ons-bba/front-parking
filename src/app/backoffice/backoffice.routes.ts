@@ -6,6 +6,7 @@ import {UsersListComponent} from './user-module/users-list/users-list.component'
 import {UserDetailsComponent} from './user-module/user-details/user-details.component';
 import {UserDashboardComponent} from './user-module/user-dashboard/user-dashboard.component';
 import { ParkingListComponent } from './parking-module/parking-list/parking-list.component';
+import { ParkingFormComponent } from './parking-module/parking-form/parking-form.component';
 
 export const backofficeRoutes: Routes = [
     { path :"users" ,component : UserDashboardComponent},
@@ -14,5 +15,6 @@ export const backofficeRoutes: Routes = [
   // { path :"users/create" ,component : CreateUserComponent },
    { path :"users/list" ,component : UsersListComponent },
    { path :"users/details/:id" ,component : UserDetailsComponent },
-   {path:"parking/list",component:ParkingListComponent}
+   {path:"parking/list",component:ParkingListComponent},
+   {path:"parking/edit/:id", component:ParkingFormComponent}
 ];
