@@ -1,0 +1,73 @@
+<div class="container mt-4">
+  <h2>Liste des Parkings</h2>
+
+  @if (isLoading) {
+    <div class="text-center my-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+  } @else if (errorMessage) {
+    <div class="alert alert-danger">{{ errorMessage }}</div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Statut</th>
+            <th>Places</th>
+            <th>Prestations</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (parking of parkings; track parking._id) {
+            <tr>
+              <td>{{ parking.nom }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'bg-success': parking.statut === 'OUVERT',
+                  'bg-danger': parking.statut === 'FERME',
+                  'bg-warning': parking.statut === 'COMPLET',
+                  'bg-info': parking.statut === 'MAINTENANCE'
+                }">
+                  {{ parking.statut }}
+                </span>
+              </td>
+              <td>
+                {{ parking.placesDisponible }}/{{ parking.placesTotal }}
+                @if (parking.tauxOccupation) {
+                  <small class="text-muted">({{ parking.tauxOccupation }}%)</small>
+                }
+              </td>
+              <td>
+                @if (parking.prestations && parking.prestations.length > 0) {
+                  <div class="d-flex flex-wrap gap-1">
+                    @for (prestation of parking.prestations; track prestation._id) {
+                      <span class="badge bg-secondary">
+                        {{ prestation.nom }}
+                      </span>
+                    }
+                  </div>
+                } @else {
+                  <span class="text-muted">Aucune prestation</span>
+                }
+              </td>
+              <td>
+                <div class="btn-group">
+                  <a [routerLink]="['edit', parking._id]" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i> Éditer
+                  </a>
+                  <button (click)="deleteParking(parking._id)" class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-trash"></i> Supprimer
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
