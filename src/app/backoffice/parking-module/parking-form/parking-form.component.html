@@ -8,41 +8,52 @@
 
   <!-- //statut -->
 
-  <!-- <select formControlName="statut">
+  <select formControlName="statut">
     <option value="OUVERT">OUVERT</option>
     <option value="FERME">FERME</option>
     <option value="COMPLET">COMPLET</option>
     <option value="MAINTENANCE">MAINTENANCE</option>
 
-  </select> -->
+  </select>
 
   <!-- 
 places  -->
-<!-- 
+
   <input type="number" formControlName="placesTotal" placeholder="Places totales">
-  <input type="number" formControlName="placesDisponible" placeholder="places disponible"> -->
+  <input type="number" formControlName="placesDisponible" placeholder="places disponible">
 
 
 
   <!-- Horaires -->
 
-  <!-- <div formGroupName="horaires">
+  <div formGroupName="horaires">
     <input type="time" formControlName="ouverture" placeholder="ouverture">
     <input type="time" formControlName="fermeture" placeholder="fermeture">
 
-  </div> -->
+  </div>
 
   <!-- localisation -->
 
 
-<!-- 
-  <div formControlName="localisation">
-    <input formArrayName="type" placeholder="type">
-    <input type="number" [value]="getLongitude()" (input)="setCoordinate(0,$event.target.value)">
-    <input type="number" [value]="getAltitude()" (input)="setCoordinate(1,$event.target.value)">
-
-  </div> -->
-
+<div formGroupName="localisation">
+  
+  
+  <div>
+    
+    <input type="number" id="longitude" 
+           [value]="getLongitude()" 
+           (change)="setCoordinate(0, $any($event.target).value)"
+           step="0.000001">
+  </div>
+  
+  <div>
+    
+    <input type="number" id="latitude" 
+           [value]="getLatitude()" 
+           (change)="setCoordinate(1, $any($event.target).value)"
+           step="0.000001">
+  </div>
+</div>
   <!-- tarifs -->
 
   <!-- <div formControlName="tarifs">
