@@ -43,7 +43,7 @@ export interface Prestation {
 }
 
 export interface Parking {
-tauxOccupation: any;
+
   _id: string;
   nom: string;
   statut: 'OUVERT' | 'FERME' | 'COMPLET' | 'MAINTENANCE';
@@ -54,6 +54,9 @@ tauxOccupation: any;
   horaires: Horaire;
   dateCreation: string;
   dateMiseAJour: string;
+  tauxOccupation: any;
+  
+  
   
   tarifs: {
     electrique: TarifType;

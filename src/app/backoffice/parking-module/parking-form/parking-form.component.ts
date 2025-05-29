@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Horaire, Prestation } from './../../../shared/interfaces/parking.interface';
+import { Horaire, Parking, Prestation, PlacesDisponibles } from './../../../shared/interfaces/parking.interface';
 import { ParkingService } from './../services/parking.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+
 
 
 @Component({
@@ -21,7 +22,9 @@ export class ParkingFormComponent implements OnInit {
   isEditMode =false;
   parkingId : string | null = null;
   isLoading = false;
-  
+  park!: Parking
+
+ 
   constructor(
     private fb : FormBuilder,
     private parkingService : ParkingService,
@@ -31,12 +34,13 @@ export class ParkingFormComponent implements OnInit {
     this.parkingForm = this.fb.group({
       nom : ['', Validators.required,Validators.maxLength(100)],
       statut : ['OUVERT', Validators.required],
-      placesTotal : ['', Validators.required,Validators.min(1)],
+      PlacesDisponibles : [null,Validators.min(0)],
+      placesTotal : [null, Validators.required,Validators.min(1)],
       localisation: this.fb.group({
         type : ['Point'],
         coordinates : [[0,0], Validators.required]
       }),
-      Horaire : this.fb.group({
+      horaires : this.fb.group({
         ouverture : ['08:00', [Validators.pattern(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/)]],
         fermeture : ['20:00', [Validators.pattern(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/)]]
       }),
@@ -58,8 +62,19 @@ export class ParkingFormComponent implements OnInit {
   loadParkingData(id : string) : void{
     this.isLoading = true;
     this.parkingService.getParkingById(id).subscribe({
-      next : (parking)=>{
-        this.parkingForm.patchValue(parking);
+      
+      next : (parking:Parking)=>{
+        console.log(parking)
+
+        this.parkingForm.patchValue({
+          nom : parking.nom,
+          statut : parking.tarifs,
+          placesTotal:parking.placesTotal,
+          coordinates:parking.localisation,
+          ouverture:parking.horaires.ouverture,
+          fermeture:parking.horaires.fermeture
+        });        
+      
         this.isLoading = false;
       },
       error : (err)=>{
@@ -67,6 +82,8 @@ export class ParkingFormComponent implements OnInit {
         this.isLoading = false
       }
     })
+    console.log(this.parkingForm.value)
+
 
   }
 
@@ -111,8 +128,21 @@ export class ParkingFormComponent implements OnInit {
     this.parkingForm.get('localisation.coordinates')?.setValue(coordinates)
   }
 
+  formatTimeForInput(timeString: string): string {
+  if (!timeString) return '';
   
+  // Si le format est déjà HH:MM
+  if (/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/.test(timeString)) {
+    return timeString;
+  }
+  
+  // Conversion depuis d'autres formats si nécessaire
+  const date = new Date(`1970-01-01T${timeString}`);
+  return isNaN(date.getTime()) ? '' : 
+         `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+}
 
+  
 
 
 }
