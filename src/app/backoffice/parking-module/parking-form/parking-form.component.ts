@@ -19,33 +19,47 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 })
 export class ParkingFormComponent implements OnInit {
   parkingForm! : FormGroup;
+  id! : string;
  
  
-  constructor(private formBuilder:FormBuilder,
+  constructor(private fb:FormBuilder,
     private parkingService:ParkingService,
     private route:ActivatedRoute
-  ){}
+  ){
+
+    this.parkingForm = this.fb.group({
+      nom:[''] // initialisation du champ nom
+    })
+
+    
+  }
 
 
 
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')
+    console.log(id)
 
 
     
-    this.parkingForm = this.formBuilder.group({
-      nom:[''] // initialisation du champ nom
-    })
+    
 
-    this.parkingService.getParkingById('id').subscribe({
+    this.parkingService.getParkingById(id: string).subscribe({
       next : (parking)=>{
-        this.parkingForm = this.parkingForm.patchValue({
+        console.log(parking)
+        this.parkingForm.patchValue({
           nom : parking.nom
-        })
+        })       
+        
+      },
+      error:(err)=>{
+        console.error(err.status)
       }
 
+
     })
+    
   }
 
 
