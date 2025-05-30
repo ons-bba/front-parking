@@ -34,6 +34,16 @@ import { HttpClient } from '@angular/common/http';
   standalone : true,
 })
 export class SearchParkingComponent implements OnInit {
+currentCity: any;
+openReservationDialog(_t73: any) {
+throw new Error('Method not implemented.');
+}
+isFavorite(arg0: any) {
+throw new Error('Method not implemented.');
+}
+toggleFavorite(_t73: any) {
+throw new Error('Method not implemented.');
+}
   parkings : Parking[] = [];
   loading : boolean = true;
   error: string |null = null;
