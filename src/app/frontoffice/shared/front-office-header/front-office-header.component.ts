@@ -20,13 +20,15 @@ import {MatIcon} from '@angular/material/icon';
   styleUrl: './front-office-header.component.scss'
 })
 export class FrontOfficeHeaderComponent {
-  currentUser: User | null;
+  currentUser!: User | null;
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {
-    this.currentUser = this.authService.getUser();
+     this.authService.currentUser$.subscribe(user=>{
+       this.currentUser = user as User;
+     });
   }
 
   logout() {

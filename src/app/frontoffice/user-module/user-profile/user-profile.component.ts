@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from '../../../shared/interfaces/interfaces.general';
 import { AuthService } from '../../../services/auth.service';
 import { UserService } from '../../../backoffice/user-module/services/user.service';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
@@ -16,6 +16,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {PHONE_REGEX} from '../../../backoffice/user-module/create-user/create-user.component';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-user-profile',
@@ -37,7 +38,8 @@ import {PHONE_REGEX} from '../../../backoffice/user-module/create-user/create-us
     MatTooltipModule,
     MatMiniFabButton,
     MatProgressSpinner,
-    DatePipe
+    DatePipe,
+    NgForOf
   ],
   styleUrls: ['./user-profile.component.scss']
 })
@@ -48,6 +50,10 @@ export class UserProfileComponent implements OnInit {
   selectedFile: File | null = null;
   previewUrl: string | ArrayBuffer | null = null;
   isLoading = false;
+  private userSub!: Subscription;
+  tempPreviewUrl: string | ArrayBuffer | null = null; // New property for temporary preview
+  sexes = ['HOMME', 'FEMME'];
+
 
   constructor(
     private fb: FormBuilder,
@@ -57,9 +63,17 @@ export class UserProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.currentUser = this.authService.getUser() as User;
-    this.previewUrl = this.getUserImage();
-    this.buildForm();
+    this.userSub = this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.currentUser = user;
+        this.buildForm();
+        this.resetImagePreview(); // Reset preview when user changes
+      }
+    });
+  }
+  resetImagePreview(): void {
+    this.tempPreviewUrl = null;
+    this.selectedFile = null;
   }
 
   buildForm(): void {
@@ -75,12 +89,6 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  getUserImage(): string {
-    if (this.currentUser?.image) {
-      return "http://localhost:3000"+this.currentUser.image;
-    }
-    return 'assets/default-profile.png'; // Fallback image
-  }
 
   toggleEditMode(): void {
     this.isEditMode = !this.isEditMode;
@@ -102,15 +110,15 @@ export class UserProfileComponent implements OnInit {
     if (file) {
       this.selectedFile = file;
 
-      // Create preview
       const reader = new FileReader();
       reader.onload = () => {
-        this.previewUrl = reader.result;
+        this.tempPreviewUrl = reader.result; // Use tempPreviewUrl for preview
       };
       reader.readAsDataURL(file);
     }
   }
 
+// user-profile.component.ts
   uploadImage(): void {
     if (!this.selectedFile || !this.currentUser) return;
 
@@ -121,12 +129,13 @@ export class UserProfileComponent implements OnInit {
           duration: 3000,
           panelClass: ['success-snackbar']
         });
-        // update image URL and local user
-        this.currentUser.image = response.imagePath; // adjust to match API response
-        this.previewUrl = this.getUserImage();
-        this.userService.setCurrentUser(this.currentUser);
-        this.isLoading = false;
+
+        // Clear temporary preview
+        this.tempPreviewUrl = null;
         this.selectedFile = null;
+        this.isLoading = false;
+
+        // No need to update currentUser here - subscription will handle it
       },
       error: () => {
         this.snackBar.open('Image upload failed.', 'Close', {
@@ -138,20 +147,33 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  getUserImage(): string {
+    if (this.currentUser?.image) {
+      // Add cache buster to prevent caching issues
+      return `http://localhost:3000${this.currentUser.image}?t=${Date.now()}`;
+    }
+    return 'assets/default-profile.png';
+  }
+
   onSubmit(): void {
     if (this.profileForm.valid) {
       const updatedUser = { ...this.currentUser, ...this.profileForm.getRawValue() };
 
       this.userService.updateUser(updatedUser, this.currentUser._id).subscribe({
-        next: (data) => {
-          console.log(data)
+        next: (response) => {
           this.snackBar.open('Profile updated successfully!', 'Close', {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
-          // Update current user in auth service
-          this.userService.setCurrentUser(updatedUser);
-          this.currentUser = updatedUser;
+
+          // Update local state from response if available
+          if (response.user) {
+            this.currentUser = response.user;
+          } else {
+            // Fallback to our updatedUser
+            this.currentUser = updatedUser;
+          }
+
           this.isEditMode = false;
           this.buildForm();
         },
@@ -165,4 +187,11 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+  }
+
+  protected readonly isSecureContext = isSecureContext;
 }

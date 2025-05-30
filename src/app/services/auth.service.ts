@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {LoginInterface} from '../login/login.component';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import {LoginResponse, User} from '../shared/interfaces/interfaces.general';
-
+import {LoginInterface} from '../login/login.component';
 export enum Role {
   CONDUCTEUR = 'CONDUCTEUR',
   OPERATEUR  = 'OPERATEUR',
@@ -41,63 +42,91 @@ export interface CreateUserDto {
   sex: Sex;
   imageFile?: File | null;
 }
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  baseUrl ="http://localhost:3000/users/";
-  constructor(private http: HttpClient) { }
+  private baseUrl = "http://localhost:3000/users";
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable().pipe(
+    distinctUntilChanged((prev, curr) =>
+      JSON.stringify(prev) === JSON.stringify(curr)
+    )
+  );
 
-
-
-  createUser(user:FormData){
-    return this.http.post(this.baseUrl+"register" , user);
+  constructor(private http: HttpClient) {
+    this.initializeUser();
   }
 
-  verifyAccount(token: string):any {
+  private initializeUser(): void {
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      try {
+        const user: User = JSON.parse(userJson);
+        this.currentUserSubject.next(user);
+      } catch (e) {
+        console.error('Error parsing user data', e);
+        this.clearUserData();
+      }
+    }
+  }
+
+  createUser(user: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, user);
+  }
+
+  verifyAccount(token: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/verifyaccount/${token}`);
   }
 
-  login(loginData: LoginInterface) {
-    return this.http.post<LoginResponse>(`${this.baseUrl}login`, loginData);
+  login(loginData: LoginInterface): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, loginData).pipe(
+      map(response => {
+        this.storeLoginData(response.token, response.user);
+        return response;
+      })
+    );
   }
-
 
   storeLoginData(token: string, user: User): void {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSubject.next(user);
   }
 
-// Retrieve the stored token
+  updateCurrentUser(updatedUser: User): void {
+    // Ensure we store the full user object with image
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    this.currentUserSubject.next(updatedUser);
+  }
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-// Retrieve the stored user
-  getUser(): User | null {
-    const userJson = localStorage.getItem('user');
-    return userJson ? JSON.parse(userJson) : null;
+  getCurrentUserValue(): User | null {
+    return this.currentUserSubject.value;
   }
 
-// Check if the user is authenticated
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
 
-// Clear session data
   logout(): void {
+    this.clearUserData();
+    this.currentUserSubject.next(null);
+  }
+
+  private clearUserData(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   }
 
-
-  forgotPassword(email: string) {
-    return this.http.post(`${this.baseUrl}forgot-password`, email);
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/forgot-password`, { email });
   }
 
-  resetPassword(data: { token: string; newPassword: string }) {
-    return this.http.post(`${this.baseUrl}reset-password`, data);
+  resetPassword(data: { token: string; newPassword: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/reset-password`, data);
   }
 }

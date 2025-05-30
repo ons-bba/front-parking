@@ -3,7 +3,7 @@
   <mat-card class="profile-card">
     <div class="profile-header">
       <div class="avatar-container">
-        <img [src]="previewUrl || getUserImage()" alt="Profile" class="profile-avatar">
+        <img [src]="tempPreviewUrl || getUserImage()" alt="Profile" class="profile-avatar">
 
         <div class="avatar-overlay" *ngIf="isEditMode">
           <label for="avatar-upload" class="upload-button">
@@ -71,21 +71,12 @@
             <mat-icon matPrefix>phone</mat-icon>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Gender</mat-label>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Sexe</mat-label>
             <mat-select formControlName="sex">
-              <mat-option value="MALE">
-                <span class="gender-option">
-                  <mat-icon>male</mat-icon> Male
-                </span>
-              </mat-option>
-              <mat-option value="FEMALE">
-                <span class="gender-option">
-                  <mat-icon>female</mat-icon> Female
-                </span>
-              </mat-option>
+              <mat-option *ngFor="let sex of sexes" [value]="sex">{{ sex }}</mat-option>
             </mat-select>
-            <mat-icon matPrefix>wc</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">

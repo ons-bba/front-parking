@@ -4,6 +4,7 @@ import { ChartConfiguration, ChartType } from 'chart.js';
 import { Chart, registerables } from 'chart.js';
 import {NgForOf, NgIf} from '@angular/common';
 import {BaseChartDirective} from 'ng2-charts';
+import {User} from '../../../shared/interfaces/interfaces.general';
 
 // Register all chart controllers
 Chart.register(...registerables);
@@ -98,4 +99,6 @@ export class UserDashboardComponent implements OnInit {
       options: { responsive: true }
     };
   }
+
+
 }

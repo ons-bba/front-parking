@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../../../shared/interfaces/interfaces.general';
-import {Observable} from 'rxjs';
+import {Observable, tap} from 'rxjs';
+import {AuthService} from '../../../services/auth.service';
 
 
 export interface getAllUserForAdminInterface{
@@ -57,37 +58,55 @@ export interface TopLoyalUser {
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserService {
-  private baseUrl = "http://localhost:3000/users/";
-  constructor(private httpclient : HttpClient) { }
+  private baseUrl = "http://localhost:3000/users";
 
-  getAllUser() :Observable<getAllUserForAdminInterface> {
-    return this.httpclient.get<getAllUserForAdminInterface>(this.baseUrl+"/active")
-  }
-  setCurrentUser(user: User): void {
-    localStorage.setItem('user', JSON.stringify(user));
-  }
-  getUserById(userId: string) {
-    return this.httpclient.get<{success:boolean , user :User}>(this.baseUrl + userId);
+  constructor(
+    private httpclient: HttpClient,
+    private authService: AuthService
+  ) { }
+
+  getAllUser(): Observable<getAllUserForAdminInterface> {
+    return this.httpclient.get<getAllUserForAdminInterface>(`${this.baseUrl}/active`);
   }
 
-  updateUser(updatedUser: any, _id: string) {
-    return this.httpclient.put(this.baseUrl  + _id + "/update", updatedUser);
+  getUserById(userId: string): Observable<{ success: boolean; user: User }> {
+    return this.httpclient.get<{ success: boolean; user: User }>(`${this.baseUrl}/${userId}`);
   }
 
-  archiver(id :string ) {
-    return this.httpclient.put(`${this.baseUrl}${id}`, this.baseUrl);
+  updateUser(updatedUser: any, userId: string): Observable<any> {
+    return this.httpclient.put(`${this.baseUrl}/${userId}/update`, updatedUser).pipe(
+      tap(() => {
+        const currentUser = this.authService.getCurrentUserValue();
+        if (currentUser && currentUser._id === userId) {
+          this.authService.updateCurrentUser({ ...currentUser, ...updatedUser });
+        }
+      })
+    );
   }
 
-
-  getStatistics(): Observable<StatisticsResponse> {
-    return this.httpclient.get<StatisticsResponse>(`${this.baseUrl}statistics`);
-  }
-
+// user.service.ts
   uploadUserImage(userId: string, imageFile: File): Observable<any> {
     const formData = new FormData();
     formData.append('image', imageFile);
-    return this.httpclient.put(`${this.baseUrl}${userId}/image`, formData);
+    return this.httpclient.put<any>(`${this.baseUrl}/${userId}/image`, formData).pipe(
+      tap((response) => {
+        const currentUser = this.authService.getCurrentUserValue();
+        if (currentUser && currentUser._id === userId) {
+          // Update with the full user object from response
+          this.authService.updateCurrentUser(response.user);
+        }
+      })
+    );
+  }
+
+  archiver(id: string): Observable<any> {
+    return this.httpclient.put(`${this.baseUrl}/${id}/archive`, {});
+  }
+
+  getStatistics(): Observable<StatisticsResponse> {
+    return this.httpclient.get<StatisticsResponse>(`${this.baseUrl}/statistics`);
   }
 
 }
