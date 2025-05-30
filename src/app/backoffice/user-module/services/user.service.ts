@@ -64,7 +64,9 @@ export class UserService {
   getAllUser() :Observable<getAllUserForAdminInterface> {
     return this.httpclient.get<getAllUserForAdminInterface>(this.baseUrl+"/active")
   }
-
+  setCurrentUser(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
   getUserById(userId: string) {
     return this.httpclient.get<{success:boolean , user :User}>(this.baseUrl + userId);
   }
@@ -82,5 +84,10 @@ export class UserService {
     return this.httpclient.get<StatisticsResponse>(`${this.baseUrl}statistics`);
   }
 
+  uploadUserImage(userId: string, imageFile: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    return this.httpclient.put(`${this.baseUrl}${userId}/image`, formData);
+  }
 
 }

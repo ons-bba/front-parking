@@ -1,0 +1,42 @@
+<!-- frontoffice.component.html -->
+<header class="app-header">
+  <div class="header-container">
+    <!-- Logo/App Name -->
+    <div class="logo-section" routerLink="/front-office">
+      <span class="material-icons logo-icon">local_parking</span>
+      <span class="app-name">Smart-parking</span>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="nav-links">
+      <a routerLink="/front-office" routerLinkActive="active">Home</a>
+      <a routerLink="/front-office/parking" routerLinkActive="active">Parking</a>
+      <a routerLink="/front-office/reservations" routerLinkActive="active">My Reservations</a>
+      <a routerLink="/front-office/contact" routerLinkActive="active">Contact</a>
+    </nav>
+
+    <!-- User Menu -->
+    <div class="user-section">
+      <button class="user-menu-button" [matMenuTriggerFor]="userMenu">
+        <img [src]="getUserImage()" alt="Profile" class="user-avatar">
+      </button>
+
+      <mat-menu #userMenu="matMenu" class="user-menu">
+<!--        <div class="user-info">-->
+<!--          <div class="user-details">-->
+<!--            <strong>{{ currentUser?.prenom }} {{ currentUser?.nom }}</strong>-->
+<!--          </div>-->
+<!--        </div>-->
+        <button mat-menu-item (click)="goToProfile()">
+          <span class="material-icons">person</span>
+          <span>My Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <span class="material-icons">logout</span>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</header>
+
