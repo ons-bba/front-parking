@@ -1,97 +1,133 @@
-<form [formGroup]="parkingForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="parkingForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-p-square me-2"></i> Informations du parking
+      </h4>
+    </div>
+    <div class="card-body">
+      <!-- Nom -->
+      <div class="mb-3">
+        <label class="form-label">Nom du parking <span class="text-danger">*</span></label>
+        <input type="text" 
+               class="form-control" 
+               formControlName="nom"
+               [ngClass]="{ 'is-invalid': parkingForm.get('nom')?.invalid && parkingForm.get('nom')?.touched }">
+        <div class="invalid-feedback" *ngIf="parkingForm.get('nom')?.hasError('required')">
+          Le nom est obligatoire
+        </div>
+        <div class="invalid-feedback" *ngIf="parkingForm.get('nom')?.hasError('maxlength')">
+          Maximum 100 caractères
+        </div>
+      </div>
 
+      <!-- Capacité -->
+      <div class="mb-3">
+        <label class="form-label">Nombre total de places <span class="text-danger">*</span></label>
+        <input type="number" 
+               class="form-control" 
+               formControlName="placesTotal" 
+               min="1"
+               [ngClass]="{ 'is-invalid': parkingForm.get('placesTotal')?.invalid && parkingForm.get('placesTotal')?.touched }">
+        <div class="invalid-feedback" *ngIf="parkingForm.get('placesTotal')?.hasError('required')">
+          La capacité est obligatoire
+        </div>
+      </div>
 
-  <!-- //Nom  -->
-  <input type="text" formControlName="nom" placeholder="Nom du parking">
-
-
-
-  <!-- //statut -->
-
-  <select formControlName="statut">
-    <option value="OUVERT">OUVERT</option>
-    <option value="FERME">FERME</option>
-    <option value="COMPLET">COMPLET</option>
-    <option value="MAINTENANCE">MAINTENANCE</option>
-
-  </select>
-
-  <!-- 
-places  -->
-
-  <input type="number" formControlName="placesTotal" placeholder="Places totales">
-  <input type="number" formControlName="placesDisponible" placeholder="places disponible">
-
-
-
-  <!-- Horaires -->
-
-  <div formGroupName="horaires">
-    <input type="time" formControlName="ouverture" placeholder="ouverture">
-    <input type="time" formControlName="fermeture" placeholder="fermeture">
-
-  </div>
-
-  <!-- localisation -->
-
-
-<div formGroupName="localisation">
-  
-  
-  <div>
-    
-    <!-- <input type="number" id="longitude" 
-           [value]="getLongitude()" 
-           (change)="setCoordinate(0, $any($event.target).value)"
-           step="0.000001">
-  </div>
-  
-  <div>
-    
-    <input type="number" id="latitude" 
-           [value]="getLatitude()" 
-           (change)="setCoordinate(1, $any($event.target).value)"
-           step="0.000001">
-  </div> -->
-</div>
-  <!-- tarifs -->
-
-  <!-- <div formControlName="tarifs">
-    <div *ngFor="let type of tarifTypes">
-      <label>{{type}}</label>
-      <div [formGroupName]="type">
-        <input type="number" formControlName="horaire" placeholder="tarif horaire">
-        <input type="number" formControlName="journalier" placeholder="Tarif journalier">
-        <input type="number" formControlName="mensuelle" placeholder="Tarif mensuelle">
+      <!-- Statut -->
+      <div class="mb-3">
+        <label class="form-label">Statut</label>
+        <select class="form-select" formControlName="statut">
+          <option value="OUVERT">Ouvert</option>
+          <option value="FERME">Fermé</option>
+          <option value="COMPLET">Complet</option>
+          <option value="MAINTENANCE">Maintenance</option>
+        </select>
       </div>
     </div>
-  </div> -->
+  </div>
 
-
-  <!-- Places disponibles par type -->
-
-  <!-- <div formControlName="places">
-    <input type="number" formControlName="standard" placeholder="Places standard">
-    <input type="number" formControlName="handicape" placeholder="Places handicapé">
-    <input type="number" formControlName="premuim" placeholder="Places premuim">
-    <input type="number" formControlName="electrique" placeholder="Places electrique">
-
-  </div> -->
-
-  <!-- prestations (simplifié: juste les IDs ou noms sélectionés) -->
-
-
-  <!-- <div formControlName="prestation">
-    <div *ngFor="let ctrl prestation.controls  let i = index">
-      <input [formControlName]="i" placeholder="ID Prestation">
-
+  <!-- Localisation -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-geo-alt me-2"></i> Localisation
+      </h4>
     </div>
+    <div class="card-body" formGroupName="localisation">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Longitude</label>
+          <input type="number" 
+                 class="form-control"
+                 (input)="updateLongitude($event)"
+                 [value]="parkingForm.get('localisation.coordinates.0')?.value"
+                 step="0.000001"
+                 [ngClass]="{ 'is-invalid': parkingForm.get('localisation.coordinates')?.invalid && parkingForm.get('localisation.coordinates')?.touched }">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Latitude</label>
+          <input type="number"
+                 class="form-control"
+                 (input)="updateLatitude($event)"
+                 [value]="parkingForm.get('localisation.coordinates.1')?.value"
+                 step="0.000001"
+                 [ngClass]="{ 'is-invalid': parkingForm.get('localisation.coordinates')?.invalid && parkingForm.get('localisation.coordinates')?.touched }">
+        </div>
+      </div>
+    </div>
+  </div>
 
-  </div> -->
+  <!-- Horaires -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-clock me-2"></i> Horaires d'ouverture
+      </h4>
+    </div>
+    <div class="card-body" formGroupName="horaires">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Ouverture (HH:MM)</label>
+          <input type="text" 
+                 class="form-control" 
+                 formControlName="ouverture" 
+                 placeholder="08:00"
+                 [ngClass]="{ 'is-invalid': parkingForm.get('horaires.ouverture')?.invalid && parkingForm.get('horaires.ouverture')?.touched }">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Fermeture (HH:MM)</label>
+          <input type="text" 
+                 class="form-control" 
+                 formControlName="fermeture" 
+                 placeholder="20:00"
+                 [ngClass]="{ 'is-invalid': parkingForm.get('horaires.fermeture')?.invalid && parkingForm.get('horaires.fermeture')?.touched }">
+        </div>
+      </div>
+    </div>
+  </div>
 
-
-  <button type="submit">Sauvegarder</button>
-
-
-<!-- </form> -->
-
+  <!-- Boutons et messages -->
+  <div class="d-flex justify-content-between align-items-center mt-4">
+  <div *ngIf="errorMessage" class="alert alert-danger mb-0 flex-grow-1 me-3">
+    {{ errorMessage }}
+  </div>
+  
+  <div>
+    <!-- Nouveau bouton Retour -->
+    <button type="button" 
+            class="btn btn-outline-secondary me-2"
+            (click)="onBack()">
+      <i class="bi bi-arrow-left me-1"></i> Retour
+    </button>
+    
+    <button type="submit" 
+            class="btn btn-primary px-4"
+            [disabled]="parkingForm.invalid || isLoading">
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+      <i class="bi bi-check-circle me-2" *ngIf="!isLoading"></i>
+      {{ isLoading ? 'Enregistrement...' : 'Enregistrer' }}
+    </button>
+  </div>
+</div>
+</form>
