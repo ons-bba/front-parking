@@ -1,3 +1,4 @@
+import { ParkingManagementComponent } from './backoffice/parking-module/parking-management/parking-management.component';
 import { Routes } from '@angular/router';
 import {backofficeRoutes} from './backoffice/backoffice.routes';
 import {VerifyAccountComponent} from './register/verify-account/verify-account.component';
@@ -33,6 +34,10 @@ export const routes: Routes = [
     // canActivate: [AuthGuard],
     // data: { roles: [Role.ADMIN] },
     children :backofficeRoutes
+  },
+  {path:'management',
+    loadComponent:()=>import('../app/backoffice/parking-module/parking-management/parking-management.component').then(m=>m.ParkingManagementComponent),
+    children:backofficeRoutes
   },
   {
     path: 'front-office',
