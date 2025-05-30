@@ -123,7 +123,7 @@ export class AuthService {
   }
 
   forgotPassword(email: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/forgot-password`, { email });
+    return this.http.post(`${this.baseUrl}/forgot-password`,  email );
   }
 
   resetPassword(data: { token: string; newPassword: string }): Observable<any> {

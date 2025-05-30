@@ -16,7 +16,7 @@ import {ModalService} from '../shared/modals/modal.service';
 // Updated phone regex to match backend pattern
 const PHONE_REGEX = /^[0-9]{8}$/;
 // Password regex from backend requirements
-const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/;
+const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&;])[A-Za-z\d.@$!%*?&;]{8,}$/;
 
 
 @Component({
@@ -115,7 +115,7 @@ export class RegisterComponent {
       next: (res: any) => {
         this.dispatcher.dispatch(DISPATCHER_ACTIONS.SPINNER,false);
         // this.showSuccess(res.message || 'Utilisateur créé avec succès!');
-        this.modals.showAlert('Utilisateur créé avec succès! , Check Your Email '  ,"success" );
+        this.modals.showAlert('User successfully created! , Check Your Email '  ,"success" );
         this.router.navigate(["/login"])
         this.resetForm();
 
