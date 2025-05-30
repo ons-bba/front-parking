@@ -1,14 +1,74 @@
-<div *ngIf="users && users.length" class="users-container">
+<!-- users-list.component.html -->
+<div class="users-container">
   <h1>Users List</h1>
 
-  @for (user of users; track  getUniqueIdentifier(user)) {
-    <div class="user-item-wrapper">
-      <app-user-item
-        [user]="user"
-        (delete)="handleAction($event)"
-        (viewDetails)="handleAction($event)"
-        (archive)="handleAction($event)"
-      ></app-user-item>
+  <!-- Compact Filter Header -->
+  <div class="filter-header">
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input type="text"
+             [(ngModel)]="searchTerm"
+             (ngModelChange)="onSearchChange()"
+             placeholder="Search users...">
+      <mat-icon>search</mat-icon>
     </div>
-  }
+
+    <!-- Filter Toggle Button -->
+    <button class="filter-toggle" (click)="toggleFilters()">
+      <mat-icon>{{ filtersExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+      Filters
+    </button>
+  </div>
+
+  <!-- Expandable Filters Section -->
+  <div class="filters-container" [class.expanded]="filtersExpanded">
+    <!-- Role Filter -->
+    <div class="role-filter">
+      <label>Filter by Role:</label>
+      <div class="role-options">
+        <div *ngFor="let role of allRoles" class="role-option">
+          <input type="checkbox"
+                 [id]="'role-'+role"
+                 [value]="role"
+                 [checked]="selectedRoles.includes(role)"
+                 (change)="onRoleChange(role)">
+          <label [for]="'role-'+role">{{ role }}</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls">
+      <div class="page-size-selector">
+        <label>Items per page:</label>
+        <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+      </div>
+
+      <div class="page-navigation">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Users List -->
+  <div *ngIf="filteredUsers.length" class="user-list">
+    @for (user of paginatedUsers; track getUniqueIdentifier(user)) {
+      <div class="user-item-wrapper">
+        <app-user-item
+          [user]="user"
+          (delete)="handleAction($event)"
+          (viewDetails)="handleAction($event)"
+          (archive)="handleAction($event)"
+        ></app-user-item>
+      </div>
+    }
+  </div>
+
+  <div *ngIf="!filteredUsers.length" class="no-results">
+    No users found matching your criteria
+  </div>
 </div>
