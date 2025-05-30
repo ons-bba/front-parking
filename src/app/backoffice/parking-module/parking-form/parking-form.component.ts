@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Horaire, Parking, Prestation, PlacesDisponibles, Localisation } from './../../../shared/interfaces/parking.interface';
+
 import { ParkingService } from './../services/parking.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Parking } from '../../../shared/interfaces/parking.interface';
+
+
 
 
 
@@ -72,9 +75,9 @@ export class ParkingFormComponent implements OnInit {
     })
   }
 
-  getLongitude(){
-    const  
-  }
+  // getLongitude(){
+  //   const  
+  // }
 
  
 
