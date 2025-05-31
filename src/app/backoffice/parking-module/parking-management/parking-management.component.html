@@ -1,0 +1,50 @@
+<div class="container mt-4">
+  <!-- Bouton Ajouter Parking -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Gestion des Parkings</h2>
+    <button class="btn btn-primary" (click)="showAddParkingForm()">
+      <i class="bi bi-plus-circle"></i> Ajouter un Parking
+    </button>
+  </div>
+
+  <!-- bouton Ajouter liste parking -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Liste Parkings</h2>
+    <button class="btn btn-primary" (click)="showListeParking()">
+      <i class="bi bi-plus-circle"></i> Afficher Parking
+    </button>
+  </div>
+  <!-- show place -->
+   <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Liste Parkings</h2>
+    <button class="btn btn-primary" (click)="showPlaceListe()">
+      <i class="bi bi-plus-circle"></i> Afficher Place
+    </button>
+  </div>
+
+  <!-- Liste des parkings (à implémenter) -->
+  <div *ngIf="!showParkingForm">
+    <!-- Votre liste de parkings ici -->
+    <p>Liste des parkings sera affichée ici...</p>
+  </div>
+
+  <!-- Formulaire de création -->
+  <div *ngIf="showParkingForm">
+    <app-parking-form 
+      (back)="hideParkingForm()"
+      (parkingCreated)="onParkingCreated($event)">
+    </app-parking-form>
+    </div>
+
+    <div *ngIf="showList">
+             <app-parking-list>
+                
+            </app-parking-list>
+    </div>
+    <div >
+  <app-placeform></app-placeform>
+
+
+    </div>
+  
+</div>

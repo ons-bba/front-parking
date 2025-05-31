@@ -1,0 +1,35 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label class="form-label">Nom du parking</label>
+    <input type="text" class="form-control" formControlName="nom" placeholder="Nom">
+    <div *ngIf="form.get('nom')?.invalid && form.get('nom')?.touched" class="invalid-feedback d-block">
+      Le nom est requis (minimum 3 caractères)
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Adresse</label>
+    <input type="text" class="form-control" formControlName="adresse" placeholder="Adresse complète">
+    <div *ngIf="form.get('adresse')?.invalid && form.get('adresse')?.touched" class="invalid-feedback d-block">
+      L'adresse est requise
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Capacité (nombre de places)</label>
+    <input type="number" class="form-control" formControlName="capacite">
+    <div *ngIf="form.get('capacite')?.invalid && form.get('capacite')?.touched" class="invalid-feedback d-block">
+      La capacité doit être entre 1 et 1000
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end gap-2">
+    <button type="button" class="btn btn-outline-secondary" (click)="parkingCreated.emit()">
+      Annuler
+    </button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || isLoading">
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span>
+      {{ isLoading ? 'Enregistrement...' : 'Enregistrer' }}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,40 @@
+<!-- Indicateur de chargement -->
+<div *ngIf="isLoading" class="loading">
+  Chargement en cours...
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>
+
+<!-- Tableau des places -->
+<table *ngIf="!isLoading && places.length > 0">
+  <thead>
+    <tr>
+      <th>Numéro</th>
+      <th>Type</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let place of places">
+      <td>{{ place.numero }}</td>
+      <td>{{ place.type }}</td>
+      <td>{{ place.statut }}</td>
+      <td>
+        <button (click)="editPlace(place._id)">Modifier</button>
+        <button (click)="deletePlace(place._id)">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Message s'il n'y a pas de places -->
+<div *ngIf="!isLoading && places.length === 0" class="no-data">
+  Aucune place disponible pour ce parking.
+</div>
+
+
+

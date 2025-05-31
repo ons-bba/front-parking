@@ -1,0 +1,25 @@
+.parking-item {
+  cursor: pointer;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+
+  &.active {
+    background-color: #e9f5ff;
+  }
+}
+.btn-outline-secondary {
+  &:hover {
+    background-color: #f8f9fa;
+  }
+  i {
+    transition: transform 0.2s;
+  }
+  &:hover i {
+    transform: translateX(-3px);
+  }
+}
