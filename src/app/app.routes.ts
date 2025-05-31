@@ -31,8 +31,8 @@ export const routes: Routes = [
   {
     path: 'backoffice',
     loadComponent: () => import('../app/backoffice/backoffice-layout.component').then(m => m.BackofficeLayoutComponent),
-    // canActivate: [AuthGuard],
-    // data: { roles: [Role.ADMIN] },
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN] },
     children :backofficeRoutes
   },
   {path:'management',
@@ -42,8 +42,8 @@ export const routes: Routes = [
   {
     path: 'front-office',
     loadComponent: () => import('../app/frontoffice/frontoffice.component').then(m => m.FrontofficeComponent),
-    // canActivate: [AuthGuard],
-    // data: { roles: [Role.OPERATEUR , Role.CONDUCTEUR] },
+    canActivate: [AuthGuard],
+    data: { roles: [Role.OPERATEUR , Role.CONDUCTEUR] },
     children :frontofficeRoutes
   },
    {path : "users/verifyaccount/:token" ,component : VerifyAccountComponent},
