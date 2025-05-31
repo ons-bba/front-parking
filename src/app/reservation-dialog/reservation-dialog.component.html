@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>Réserver une place</h2>
+<mat-dialog-content>
+  <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+    <div class="row g-3">
+      <!-- Type de place -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Type de place</mat-label>
+          <mat-select formControlName="typePlace">
+            <mat-option *ngFor="let type of placeTypes" [value]="type">
+              {{ type | titlecase }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="reservationForm.get('typePlace')?.hasError('required')">
+            Ce champ est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Date et heure de début -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Date et heure de début</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dateDebut">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="reservationForm.get('dateDebut')?.hasError('required')">
+            Ce champ est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Durée -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Durée</mat-label>
+          <mat-select formControlName="duree">
+            <mat-option *ngFor="let option of durationOptions" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="reservationForm.get('duree')?.hasError('required')">
+            Ce champ est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Position (cachée mais nécessaire pour le backend) -->
+      <input type="hidden" formControlName="longitude">
+      <input type="hidden" formControlName="latitude">
+    </div>
+
+    <div class="parking-info mt-4 p-3 bg-light rounded">
+      <h5 class="fw-bold">{{ data.parking.nom }}</h5>
+      <div class="d-flex gap-3">
+        <span class="badge bg-primary d-flex align-items-center">
+          <mat-icon class="me-1">local_parking</mat-icon>
+          {{ data.parking.placesDisponible }} places libres
+        </span>
+        <span class="badge bg-secondary d-flex align-items-center">
+          <mat-icon class="me-1">directions_walk</mat-icon>
+          {{ data.distance | number:'1.1-1' }} km
+        </span>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions >
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSubmit()"
+    [disabled]="reservationForm.invalid || loading"
+  >
+    <span *ngIf="!loading">Confirmer la réservation</span>
+    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+  </button>
+</mat-dialog-actions>
