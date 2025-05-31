@@ -67,7 +67,7 @@ export class RegisterComponent {
           Validators.pattern(PASSWORD_PATTERN)
         ]
       ],
-      telephone: ['', [Validators.pattern(PHONE_REGEX)]],
+      telephone: ['', [Validators.required , Validators.pattern(PHONE_REGEX)]],
       role: ['CONDUCTEUR', Validators.required],
       sex: ['HOMME', Validators.required],
       image: [null]
